@@ -41,7 +41,7 @@ bot.dialog('/', [
              session.endDialog(msg);
          }else if(typeof session.message.attachments[0] !== 'undefined'){
 
-            if(session.message.attachments[0].contentType == 'image/jpeg' || session.message.attachments[0].contentType == 'image/png'){
+            if(session.message.attachments[0].contentType == 'image/jpeg' || session.message.attachments[0].contentType.indexOf("image")!==-1){
             //object
             console.log('%s listening to',session.message.attachments[0].contentType); 
             // face api
