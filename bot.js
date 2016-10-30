@@ -35,14 +35,14 @@ bot.dialog('/', dialog);
 dialog.matches('你好',[
   function(session,args,next){
       builder.Prompts.attachment(session,'請上傳一張照片讓我看看在場的俊男美女');
-      
-    },
-   function(session,results){
-    if (results.response){
+      if (results.response){
         session.beginDialog('/mygender',args);     //dialog mygender
     }else{
           next();
       }
+    },
+   function(session,results){
+    
     session.send('總共有 ％d 男 ％d女'); 
 
     }
@@ -50,35 +50,56 @@ dialog.matches('你好',[
 //intent LUIS 請客     根目錄/smileFace & actionmoneyFace為判斷笑容值 ＆ Jerry/younger 
 dialog.matches('開心',[
   function(session,args,next){
-     session.send('請上傳一張照片讓我看看誰最開心');
-        session.beginDialog('/smileFace',args);   //dialog smileFace
+     builder.Prompts.attachment(session,'請上傳一張照片讓我看看誰最開心');
+        session.beginDialog('/smileFace',args); 
   },
   function(session,results){
+      //dialog smileFace
    session.send('％s看起來笑得很燦爛');  //Send Photo CT建議放大開心那個人的臉部比較有效果
-   
+   var msg = new builder.Message(session)
+            
+            .attachments([{
+                
+                contentType: "image/jpeg",
+                contentUrl: "http://www.bonavida.com.hk/wp-content/uploads/2014/02/101413-Kobe.jpg",
+            }]);
+             session.endDialog(msg);
 
   }
 ]);
 dialog.matches('請客',[
 
-    function (session) {
+    function (session,args,next) {
        builder.Prompts.attachment(session,'請上傳一張照片讓我看看今天午餐誰來請客');
-           
+           session.beginDialog('/actionmoneyFace',args);  
     },
 
     function (session, results) {    
-       if (results.response){
-         session.beginDialog('/actionmoneyFace',args);     //check who's younger or Jerry  //dialog mygender
-        }else{
-           next();
-        } 
-
-          session.send('％s最想請客');   //Send Jerry & younger's Photo 
+      
+            //check who's younger or Jerry  //dialog mygender
+            session.send('％s最想請客');   //Send Jerry & younger's Photo 
       }
 
 ]);
 
 
+bot.dialog('/smileFace', [
+   function(session,args,next){
+
+
+          var msg = new builder.Message(session)
+            
+            .attachments([{
+                
+                contentType: "image/jpeg",
+                contentUrl: "http://www.bonavida.com.hk/wp-content/uploads/2014/02/101413-Kobe.jpg",
+            }]);
+             session.endDialog(msg);
+   }
+
+
+
+]);
 
 
 
